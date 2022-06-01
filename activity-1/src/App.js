@@ -7,6 +7,7 @@ function App() {
   const initialData = JSON.parse(jsonData)
 
   const [data, setData] = useState(initialData)
+  const [filter, setFilter] = useState("")
 
   const sortBy = useCallback((key, direction) => {
     // looking at the existing data it makes sense to secondarily sort by topping
@@ -30,6 +31,29 @@ function App() {
     }
   }, [data])
 
+  const handleFilterChange = useCallback((event) => {
+    setFilter(event.target.value)
+  })
+
+  const filterData = useCallback(() => {
+    if ([null, undefined, ""].includes(filter)) {
+      setData(initialData)
+      return
+    }
+
+    setData([...data].filter((item) =>
+      item.id.toLowerCase().includes(filter.toLowerCase())
+      || item.type.toLowerCase().includes(filter.toLowerCase())
+      || item.name.toLowerCase().includes(filter.toLowerCase())
+      || item.topping.toLowerCase().includes(filter.toLowerCase())
+    ))
+  }, [data, filter])
+
+  const resetData = useCallback(() => {
+    setFilter("")
+    setData(initialData)
+  }, [])
+
   return (
     <div className="App">
       {/*TODO: use a cute gif or something*/}
@@ -47,6 +71,17 @@ function App() {
       {/*    Learn React*/}
       {/*  </a>*/}
       {/*</header>*/}
+
+      <form>
+        <label>
+          Filter:
+          <input type="text" name="filter" value={filter} onChange={handleFilterChange} />
+        </label>
+
+        <input type="button" value="Apply" onClick={filterData} />
+        <input type="button" value="Reset" onClick={resetData} />
+      </form>
+
       <table>
         <thead>
         <tr>
