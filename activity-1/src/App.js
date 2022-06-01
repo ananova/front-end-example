@@ -8,16 +8,26 @@ function App() {
 
   const [data, setData] = useState(initialData)
 
-  const sortBy = useCallback((key) => {
+  const sortBy = useCallback((key, direction) => {
     // looking at the existing data it makes sense to secondarily sort by topping
     // but this wouldn't necessarily be the case with other baked goods ??
-    setData([...data].sort((a, b) =>
-      (a[key] > b[key])
-        ? 1
-        : (a[key] === b[key])
-          ? ((a.topping > b.topping)
-            ? 1
-            : -1) : -1 ))
+    if (direction === "asc") {
+      setData([...data].sort((a, b) =>
+        (a[key] > b[key])
+          ? 1
+          : (a[key] === b[key])
+            ? ((a.topping > b.topping)
+              ? 1
+              : -1) : -1 ))
+    } else {
+      setData([...data].sort((a, b) =>
+        (a[key] > b[key])
+          ? -1
+          : (a[key] === b[key])
+            ? ((a.topping > b.topping)
+              ? -1
+              : 1) : 1 ))
+    }
   }, [data])
 
   return (
@@ -40,10 +50,10 @@ function App() {
       <table>
         <thead>
         <tr>
-          <th className="id" onClick={() => sortBy("id")}>id</th>
-          <th onClick={() => sortBy("type")}>type</th>
-          <th onClick={() => sortBy("name")}>name</th>
-          <th onClick={() => sortBy("topping")}>topping</th>
+          <th className="id">      id      <span onClick={() => sortBy("id",      "asc")}>&#x2191;</span> <span onClick={() => sortBy("id",      "desc")}>&#x2193;</span></th>
+          <th className="type">    type    <span onClick={() => sortBy("type",    "asc")}>&#x2191;</span> <span onClick={() => sortBy("type",    "desc")}>&#x2193;</span></th>
+          <th className="name">    name    <span onClick={() => sortBy("name",    "asc")}>&#x2191;</span> <span onClick={() => sortBy("name",    "desc")}>&#x2193;</span></th>
+          <th className="topping"> topping <span onClick={() => sortBy("topping", "asc")}>&#x2191;</span> <span onClick={() => sortBy("topping", "desc")}>&#x2193;</span></th>
         </tr>
         </thead>
 
