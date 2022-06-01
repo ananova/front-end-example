@@ -1,11 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
 
-import jsonData from './data.json';
-
+import jsonData from './data.json'
+import { useCallback, useState } from 'react'
 
 function App() {
-  const data = JSON.parse(jsonData);
+  const initialData = JSON.parse(jsonData)
+
+  const [data, setData] = useState(initialData)
+
+  const sortBy = useCallback((key) => {
+    // looking at the existing data it makes sense to secondarily sort by topping
+    // but this wouldn't necessarily be the case with other baked goods ??
+    setData([...data].sort((a, b) =>
+      (a[key] > b[key])
+        ? 1
+        : (a[key] === b[key])
+          ? ((a.topping > b.topping)
+            ? 1
+            : -1) : -1 ))
+  }, [data])
+
   return (
     <div className="App">
       {/*TODO: use a cute gif or something*/}
@@ -23,14 +37,13 @@ function App() {
       {/*    Learn React*/}
       {/*  </a>*/}
       {/*</header>*/}
-
       <table>
         <thead>
         <tr>
-          <th>id</th>
-          <th>type</th>
-          <th>name</th>
-          <th>topping</th>
+          <th className="id" onClick={() => sortBy("id")}>id</th>
+          <th onClick={() => sortBy("type")}>type</th>
+          <th onClick={() => sortBy("name")}>name</th>
+          <th onClick={() => sortBy("topping")}>topping</th>
         </tr>
         </thead>
 
@@ -50,7 +63,7 @@ function App() {
       </table>
 
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
