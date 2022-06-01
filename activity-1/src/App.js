@@ -3,23 +3,24 @@ import './App.css'
 import jsonData from './data.json'
 import { useCallback, useState } from 'react'
 
-function App() {
+function App () {
   const initialData = JSON.parse(jsonData)
 
   const [data, setData] = useState(initialData)
-  const [filter, setFilter] = useState("")
+  const [filter, setFilter] = useState('')
+  const [newItem, setNewItem] = useState({ id: '', type: '', name: '', topping: '' })
 
   const sortBy = useCallback((key, direction) => {
     // looking at the existing data it makes sense to secondarily sort by topping
     // but this wouldn't necessarily be the case with other baked goods ??
-    if (direction === "asc") {
+    if (direction === 'asc') {
       setData([...data].sort((a, b) =>
         (a[key] > b[key])
           ? 1
           : (a[key] === b[key])
             ? ((a.topping > b.topping)
               ? 1
-              : -1) : -1 ))
+              : -1) : -1))
     } else {
       setData([...data].sort((a, b) =>
         (a[key] > b[key])
@@ -27,7 +28,7 @@ function App() {
           : (a[key] === b[key])
             ? ((a.topping > b.topping)
               ? -1
-              : 1) : 1 ))
+              : 1) : 1))
     }
   }, [data])
 
@@ -36,7 +37,7 @@ function App() {
   })
 
   const filterData = useCallback(() => {
-    if ([null, undefined, ""].includes(filter)) {
+    if ([null, undefined, ''].includes(filter)) {
       setData(initialData)
       return
     }
@@ -50,50 +51,68 @@ function App() {
   }, [data, filter])
 
   const resetData = useCallback(() => {
-    setFilter("")
+    setFilter('')
     setData(initialData)
   }, [])
 
-  return (
-    <div className="App">
-      {/*TODO: use a cute gif or something*/}
-      {/*<header className="App-header">*/}
-      {/*  <img src={logo} className="App-logo" alt="logo" />*/}
-      {/*  <p>*/}
-      {/*    Edit <code>src/App.js</code> and save to reload.*/}
-      {/*  </p>*/}
-      {/*  <a*/}
-      {/*    className="App-link"*/}
-      {/*    href="https://reactjs.org"*/}
-      {/*    target="_blank"*/}
-      {/*    rel="noopener noreferrer"*/}
-      {/*  >*/}
-      {/*    Learn React*/}
-      {/*  </a>*/}
-      {/*</header>*/}
+  const handleNewItemChange = useCallback((event, key) => {
+    setNewItem({ ...newItem, [key]: event.target.value })
+  })
 
+  const handleNewItemSubmit = useCallback(() => {
+    setData([...data, newItem])
+  }, [data, newItem])
+
+  return (
+    <div className='App'>
       <form>
         <label>
           Filter:
-          <input type="text" name="filter" value={filter} onChange={handleFilterChange} />
+          <input type='text' name='filter' value={filter} onChange={handleFilterChange} />
         </label>
 
-        <input type="button" value="Apply" onClick={filterData} />
-        <input type="button" value="Reset" onClick={resetData} />
+        <input type='button' value='Apply' onClick={filterData} />
+        <input type='button' value='Reset' onClick={resetData} />
       </form>
+
+      Add New
+      <form>
+        <label>
+          id:
+          <input type='text' name='id' value={newItem.id} onChange={(event) => handleNewItemChange(event, 'id')} />
+        </label>
+        <label>
+          type:
+          <input type='text' name='type' value={newItem.type}
+                 onChange={(event) => handleNewItemChange(event, 'type')} />
+        </label>
+        <label>
+          name:
+          <input type='text' name='name' value={newItem.name}
+                 onChange={(event) => handleNewItemChange(event, 'name')} />
+        </label>
+        <label>
+          topping:
+          <input type='text' name='topping' value={newItem.topping}
+                 onChange={(event) => handleNewItemChange(event, 'topping')} />
+        </label>
+
+        <input type='button' value='Add new baked good' onClick={handleNewItemSubmit} />
+      </form>
+
 
       <table>
         <thead>
         <tr>
-          <th className="id">      id      <span onClick={() => sortBy("id",      "asc")}>&#x2191;</span> <span onClick={() => sortBy("id",      "desc")}>&#x2193;</span></th>
-          <th className="type">    type    <span onClick={() => sortBy("type",    "asc")}>&#x2191;</span> <span onClick={() => sortBy("type",    "desc")}>&#x2193;</span></th>
-          <th className="name">    name    <span onClick={() => sortBy("name",    "asc")}>&#x2191;</span> <span onClick={() => sortBy("name",    "desc")}>&#x2193;</span></th>
-          <th className="topping"> topping <span onClick={() => sortBy("topping", "asc")}>&#x2191;</span> <span onClick={() => sortBy("topping", "desc")}>&#x2193;</span></th>
+          <th className='id'>      id      <span onClick={() => sortBy('id',      'asc')}>&#x2191;</span> <span onClick={() => sortBy('id',      'desc')}>&#x2193;</span></th>
+          <th className='type'>    type    <span onClick={() => sortBy('type',    'asc')}>&#x2191;</span> <span onClick={() => sortBy('type',    'desc')}>&#x2193;</span></th>
+          <th className='name'>    name    <span onClick={() => sortBy('name',    'asc')}>&#x2191;</span> <span onClick={() => sortBy('name',    'desc')}>&#x2193;</span></th>
+          <th className='topping'> topping <span onClick={() => sortBy('topping', 'asc')}>&#x2191;</span> <span onClick={() => sortBy('topping', 'desc')}>&#x2193;</span></th>
         </tr>
         </thead>
 
         <tbody>
-        {data.map(({id, type, name, topping}) => {
+        {data.map(({ id, type, name, topping }) => {
           return (
             <tr key={`${id}-${topping}`}>
               <td>{id}</td>
