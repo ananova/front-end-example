@@ -32,9 +32,9 @@ function App () {
     }
   }, [data])
 
-  const handleFilterChange = useCallback((event) => {
+  const handleFilterChange = (event) => {
     setFilter(event.target.value)
-  })
+  }
 
   const filterData = useCallback(() => {
     if ([null, undefined, ''].includes(filter)) {
@@ -48,16 +48,16 @@ function App () {
       || item.name.toLowerCase().includes(filter.toLowerCase())
       || item.topping.toLowerCase().includes(filter.toLowerCase())
     ))
-  }, [data, filter])
+  }, [data, filter, initialData])
 
   const resetData = useCallback(() => {
     setFilter('')
     setData(initialData)
-  }, [])
+  }, [initialData])
 
-  const handleNewItemChange = useCallback((event, key) => {
+  const handleNewItemChange = (event, key) => {
     setNewItem({ ...newItem, [key]: event.target.value })
-  })
+  }
 
   const handleNewItemSubmit = useCallback(() => {
     setData([...data, newItem])
