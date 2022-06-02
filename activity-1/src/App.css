@@ -6,7 +6,80 @@
   color: #3b3b3b;
   -webkit-font-smoothing: antialiased;
   font-smoothing: antialiased;
-  background-color: #2b2b2b;
+  background-color: #a89faf;
+}
+
+.wrapper {
+  margin: 0 auto;
+  padding: 40px;
+  max-width: 800px;
+}
+
+.button {
+  font-weight: 900;
+  color: #ffffff;
+  background: #8859B2;
+  height: 32px;
+  padding: 0 10px;
+  margin: 0 0 0 10px;
+}
+
+.filter {
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 40px;
+}
+
+.filter__text-input {
+  height: 26px;
+  border-radius: 2px;
+  flex-grow: 4;
+}
+
+.filter__button {
+  font-weight: 900;
+  color: #ffffff;
+  background: #8859B2;
+  height: 32px;
+  padding: 0 10px;
+  margin: 0 0 0 10px;
+  width: 100px;
+  flex-grow: 1;
+}
+
+.add-new {
+  padding-bottom: 40px;
+  display: flex;
+  row-gap: 10px;
+}
+
+.add-new__text-input {
+  height: 26px;
+  border-radius: 2px;
+  flex-grow: 1;
+}
+
+input:focus-visible {
+  outline: #8859B2 auto 1px;
+}
+
+.add-new__text-input:not(:first-child) {
+  margin: 0 0 0 10px;
+}
+
+.add-new__button {
+  flex-grow: 1;
+  font-weight: 900;
+  color: #ffffff;
+  background: #8859B2;
+  height: 32px;
+  padding: 0 10px;
+  margin: 0 0 0 10px;
+}
+
+.up-arrow {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .table {
@@ -29,6 +102,7 @@
   font-weight: 900;
   color: #ffffff;
   background: #8859B2;
+  text-transform: uppercase;
 }
 
 .cell {

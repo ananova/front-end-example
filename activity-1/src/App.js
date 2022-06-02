@@ -65,67 +65,54 @@ function App () {
 
   return (
     <div className='App'>
-      <form>
-        <label>
-          Filter:
-          <input type='text' name='filter' value={filter} onChange={handleFilterChange} />
-        </label>
+      <div className='wrapper'>
+        <div className='filter'>
+          <input className='filter__text-input' type='text' name='filter' value={filter}
+                 onChange={handleFilterChange} />
+          <input className='filter__button' type='button' value='Filter' onClick={filterData} />
+          <input className='filter__button' type='button' value='Reset' onClick={resetData} />
+        </div>
 
-        <input type='button' value='Apply' onClick={filterData} />
-        <input type='button' value='Reset' onClick={resetData} />
-      </form>
+        <div className='add-new'>
+          {['id', 'type', 'name', 'topping'].map((key) => (
+            <input className='add-new__text-input' type='text' placeholder={key} name={key} value={newItem[key]}
+                   onChange={(event) => handleNewItemChange(event, key)} />
+          ))}
 
-      Add New
-      <form>
-        <label>
-          id:
-          <input type='text' name='id' value={newItem.id} onChange={(event) => handleNewItemChange(event, 'id')} />
-        </label>
-        <label>
-          type:
-          <input type='text' name='type' value={newItem.type}
-                 onChange={(event) => handleNewItemChange(event, 'type')} />
-        </label>
-        <label>
-          name:
-          <input type='text' name='name' value={newItem.name}
-                 onChange={(event) => handleNewItemChange(event, 'name')} />
-        </label>
-        <label>
-          topping:
-          <input type='text' name='topping' value={newItem.topping}
-                 onChange={(event) => handleNewItemChange(event, 'topping')} />
-        </label>
-
-        <input type='button' value='Add new baked good' onClick={handleNewItemSubmit} />
-      </form>
+          <input className='add-new__button' type='button' value='Add' onClick={handleNewItemSubmit} />
+        </div>
 
 
-      <table>
-        <thead>
-        <tr>
-          <th className='id'>      id      <span onClick={() => sortBy('id',      'asc')}>&#x2191;</span> <span onClick={() => sortBy('id',      'desc')}>&#x2193;</span></th>
-          <th className='type'>    type    <span onClick={() => sortBy('type',    'asc')}>&#x2191;</span> <span onClick={() => sortBy('type',    'desc')}>&#x2193;</span></th>
-          <th className='name'>    name    <span onClick={() => sortBy('name',    'asc')}>&#x2191;</span> <span onClick={() => sortBy('name',    'desc')}>&#x2193;</span></th>
-          <th className='topping'> topping <span onClick={() => sortBy('topping', 'asc')}>&#x2191;</span> <span onClick={() => sortBy('topping', 'desc')}>&#x2193;</span></th>
-        </tr>
-        </thead>
+        <table className='table'>
+          <thead>
+          <tr className='row header'>
+            {['id', 'type', 'name', 'topping'].map((key) => (
+              <th className='cell'>
+                {key}
 
-        <tbody>
-        {data.map(({ id, type, name, topping }) => {
-          return (
-            <tr key={`${id}-${topping}`}>
-              <td>{id}</td>
-              <td>{type}</td>
-              <td>{name}</td>
-              <td>{topping}</td>
-            </tr>
-          )
-        })}
-        </tbody>
+                <span className='up-arrow' onClick={() => sortBy(key, 'asc')}>&#x2191;</span>
+                <span className='down-arrow' onClick={() => sortBy(key, 'desc')}>&#x2193;</span>
+              </th>
+            ))}
+          </tr>
+          </thead>
 
-      </table>
+          <tbody>
+          {data.map(({ id, type, name, topping }) => {
+            return (
+              <tr className='row' key={`${id}-${topping}`}>
+                <td className='cell'>{id}</td>
+                <td className='cell'>{type}</td>
+                <td className='cell'>{name}</td>
+                <td className='cell'>{topping}</td>
+              </tr>
+            )
+          })}
+          </tbody>
 
+        </table>
+
+      </div>
     </div>
   )
 }
